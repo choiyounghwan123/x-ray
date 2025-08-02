@@ -43,7 +43,7 @@ criterion = nn.BCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
 # MLflow 설정
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri("http://mlflow-service:5000")
 mlflow.set_experiment("unet-lung-segmentation")
 
 with mlflow.start_run():

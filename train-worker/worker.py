@@ -46,6 +46,20 @@ while True:
         # Kubernetes Job 이름
         job_name = f"train-job-pr-{pr}"
 
+        # 인자 이름 매핑 (스크립트의 정확한 인자명에 맞춤)
+        arg_mapping = {
+            "epochs": "num_epochs",
+            "batch_size": "batch_size", 
+            "lr": "lr",
+            "data_dir": "data_dir"
+        }
+        
+        # 매핑된 인자들로 변환
+        mapped_args = []
+        for k, v in params.items():
+            arg_name = arg_mapping.get(k, k)
+            mapped_args.append(f"--{arg_name}={v}")
+
         # Job 스펙
         job = client.V1Job(
             metadata=client.V1ObjectMeta(name=job_name),
@@ -57,8 +71,8 @@ while True:
                             client.V1Container(
                                 name="trainer",
                                 image=image,
-                                # Dockerfile의 CMD 사용: python train_unet_with_mlflow.py
-                                args=[f"--{k}={v}" for k, v in params.items()],
+                                command=["python", "train_unet_with_mlflow.py"],
+                                args=mapped_args,
                                 resources=client.V1ResourceRequirements(
                                     limits={"nvidia.com/gpu": "1"}  # GPU 요청
                                 )

@@ -57,7 +57,7 @@ while True:
                             client.V1Container(
                                 name="trainer",
                                 image=image,
-                                # Dockerfile의 CMD 사용: python train_unet_with_mlflow.py
+                                command=["python", "train_unet_with_mlflow.py"],
                                 args=[f"--{k}={v}" for k, v in params.items()],
                                 env=[
                                     client.V1EnvVar(name="NVIDIA_VISIBLE_DEVICES", value="all"),
