@@ -57,7 +57,7 @@ while True:
                             client.V1Container(
                                 name="trainer",
                                 image=image,
-                                command=["python", "train.py"],
+                                # Dockerfile의 CMD 사용: python train_unet_with_mlflow.py
                                 args=[f"--{k}={v}" for k, v in params.items()],
                                 resources=client.V1ResourceRequirements(
                                     limits={"nvidia.com/gpu": "1"}  # GPU 요청
