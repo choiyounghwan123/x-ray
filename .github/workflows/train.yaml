@@ -25,7 +25,7 @@ jobs:
               "pr": "${{ github.event.pull_request.number || github.run_id }}",
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
-              "image": "yourdocker/train-img:latest",
+              "image": "fdgdfgdgf123/train-img:latest",
               "params": {
                 "epochs": 5,
                 "batch_size": 4,
