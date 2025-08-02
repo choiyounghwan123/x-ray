@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: train-api
+  labels:
+    app: train-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: train-api
+  template:
+    metadata:
+      labels:
+        app: train-api
+    spec:
+      containers:
+        - name: train-api
+          image: fdgdfgdgf123/train-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_HOST
+              value: "redis.default.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            

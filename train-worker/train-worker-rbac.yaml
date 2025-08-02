@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: train-worker
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: train-worker-role
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create", "get", "list", "watch", "delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: train-worker-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: train-worker-role
+subjects:
+- kind: ServiceAccount
+  name: train-worker
+  namespace: default 

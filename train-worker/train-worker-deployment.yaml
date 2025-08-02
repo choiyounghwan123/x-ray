@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: train-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: train-worker
+  template:
+    metadata:
+      labels:
+        app: train-worker
+    spec:
+      serviceAccountName: train-worker
+      containers:
+        - name: train-worker
+          image: fdgdfgdgf123/train-worker:latest
+          env:
+            - name: REDIS_HOST
+              value: "redis.default.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
