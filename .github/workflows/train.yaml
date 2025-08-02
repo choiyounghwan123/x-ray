@@ -1,13 +1,9 @@
 name: Trigger Training Job2
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Build and Push Docker Image]
+    types: [completed]
 
 jobs:
   trigger-training:

@@ -12,7 +12,7 @@ on:
     paths:
       - 'train/**'
   workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: self-hosted
@@ -21,6 +21,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
+      - name: Change directory
+        run: |
+          cd train
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
