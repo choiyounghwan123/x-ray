@@ -1,4 +1,4 @@
-name: Trigger Training Job
+name: Trigger Training Job2
 
 on:
   push:
