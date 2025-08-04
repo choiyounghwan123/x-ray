@@ -1,4 +1,3 @@
-nohup: ignoring input
 Forwarding from 0.0.0.0:5000 -> 5000
 Handling connection for 5000
 Handling connection for 5000
@@ -10,6 +9,8 @@ Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
+Forwarding from 0.0.0.0:9001 -> 9001
+Forwarding from 0.0.0.0:30001 -> 9001
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
@@ -17,8 +18,36 @@ Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
 Handling connection for 5000
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
 Handling connection for 5000
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
@@ -36,8 +65,11 @@ Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
+Forwarding from 0.0.0.0:8000 -> 8000
+Handling connection for 8000
 Handling connection for 5000
 Handling connection for 5000
+Handling connection for 8000
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
@@ -80,17 +112,3 @@ Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
 Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-Handling connection for 5000
-error: lost connection to pod
