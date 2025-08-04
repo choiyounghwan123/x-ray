@@ -59,6 +59,9 @@ while True:
         for k, v in params.items():
             arg_name = arg_mapping.get(k, k)
             mapped_args.append(f"--{arg_name}={v}")
+        
+        # data_dir 추가 (PVC 마운트 경로에 맞춤)
+        mapped_args.append("--data_dir=/data")
 
         # Job 스펙
         job = client.V1Job(
@@ -75,10 +78,52 @@ while True:
                                 args=mapped_args,
                                 resources=client.V1ResourceRequirements(
                                     limits={"nvidia.com/gpu": "1"}  # GPU 요청
-                                )
+                                ),
+                                env=[
+                                    client.V1EnvVar(name="NVIDIA_VISIBLE_DEVICES", value="all"),
+                                    client.V1EnvVar(name="NVIDIA_DRIVER_CAPABILITIES", value="compute,utility")
+                                ],
+                                volume_mounts=[
+                                    client.V1VolumeMount(
+                                        name="training-data",
+                                        mount_path="/data",
+                                        read_only=True
+                                    ),
+                                    # GPU Device Files
+                                    client.V1VolumeMount(name="nvidia0", mount_path="/dev/nvidia0"),
+                                    client.V1VolumeMount(name="nvidiactl", mount_path="/dev/nvidiactl"),
+                                    client.V1VolumeMount(name="nvidia-uvm", mount_path="/dev/nvidia-uvm"),
+                                    client.V1VolumeMount(name="nvidia-uvm-tools", mount_path="/dev/nvidia-uvm-tools"),
+                                    client.V1VolumeMount(name="nvidia-modeset", mount_path="/dev/nvidia-modeset"),
+                                    # NVIDIA Binaries
+                                    client.V1VolumeMount(name="nvidia-smi", mount_path="/usr/bin/nvidia-smi"),
+                                    # NVIDIA Libraries
+                                    client.V1VolumeMount(name="libcuda-so-1", mount_path="/usr/lib/x86_64-linux-gnu/libcuda.so.1"),
+                                    client.V1VolumeMount(name="libnvidia-ml-so-1", mount_path="/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1")
+                                ]
                             )
                         ],
-                        restart_policy="Never"
+                        volumes=[
+                            client.V1Volume(
+                                name="training-data",
+                                persistent_volume_claim=client.V1PersistentVolumeClaimVolumeSource(
+                                    claim_name="training-data-pvc-v2"
+                                )
+                            ),
+                            # GPU Device Files
+                            client.V1Volume(name="nvidia0", host_path=client.V1HostPathVolumeSource(path="/dev/nvidia0")),
+                            client.V1Volume(name="nvidiactl", host_path=client.V1HostPathVolumeSource(path="/dev/nvidiactl")),
+                            client.V1Volume(name="nvidia-uvm", host_path=client.V1HostPathVolumeSource(path="/dev/nvidia-uvm")),
+                            client.V1Volume(name="nvidia-uvm-tools", host_path=client.V1HostPathVolumeSource(path="/dev/nvidia-uvm-tools")),
+                            client.V1Volume(name="nvidia-modeset", host_path=client.V1HostPathVolumeSource(path="/dev/nvidia-modeset")),
+                            # NVIDIA Binaries
+                            client.V1Volume(name="nvidia-smi", host_path=client.V1HostPathVolumeSource(path="/usr/bin/nvidia-smi")),
+                            # NVIDIA Libraries
+                            client.V1Volume(name="libcuda-so-1", host_path=client.V1HostPathVolumeSource(path="/usr/lib/x86_64-linux-gnu/libcuda.so.1")),
+                            client.V1Volume(name="libnvidia-ml-so-1", host_path=client.V1HostPathVolumeSource(path="/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1"))
+                        ],
+                        restart_policy="Never",
+                        node_selector={"accelerator": "nvidia"}
                     )
                 ),
                 backoff_limit=2
