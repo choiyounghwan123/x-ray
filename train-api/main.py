@@ -28,7 +28,7 @@ async def train_endpoint(request: Request):
         "pr": payload.get("pr"),
         "repo": payload.get("repo"),
         "sha": payload.get("sha"),
-        "image": payload.get("image", "yourdocker/train-img:latest"),
+        "image": payload.get("image", "fdgdfgdgf123/train-img:latest"),
         "params": payload.get("params", {"epochs": 3})
     }
 

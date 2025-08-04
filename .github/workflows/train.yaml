@@ -1,4 +1,4 @@
-name: Trigger Training Job2
+name: Trigger Training Job
 
 on:
   workflow_run:
@@ -21,7 +21,7 @@ jobs:
               "pr": "${{ github.event.pull_request.number || github.run_id }}",
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
-              "image": "fdgdfgdgf123/train-img:latest",
+              "image": "fdgdfgdgf123/train-img:${{ github.sha }}",
               "params": {
                 "epochs": 5,
                 "batch_size": 4,
