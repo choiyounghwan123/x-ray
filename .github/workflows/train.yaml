@@ -15,10 +15,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       
-      - name: Get PR SHA
+      - name: Get PR SHA  
         id: get-sha
         run: |
-          SHA="${{ github.event.workflow_run.head_sha }}"
+          # Get the actual SHA from the successful workflow run
+          SHA="${{ github.event.workflow_run.head_commit.id }}"
           echo "sha=$SHA" >> $GITHUB_OUTPUT
           echo "Using SHA: $SHA"
           
