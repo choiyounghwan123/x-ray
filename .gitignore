@@ -1,2 +1,17 @@
 train/Chest-X-Ray/
 job-monitor/.env
+
+# Log files
+*.log
+nohup*.log
+nohup.out
+
+# NFS temporary files
+.nfs*
+
+# Other common files to ignore
+__pycache__/
+*.pyc
+*.pyo
+.env
+.DS_Store
