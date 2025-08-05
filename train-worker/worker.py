@@ -82,6 +82,7 @@ while True:
                                 env=[
                                     client.V1EnvVar(name="NVIDIA_VISIBLE_DEVICES", value="all"),
                                     client.V1EnvVar(name="NVIDIA_DRIVER_CAPABILITIES", value="compute,utility"),
+                                    client.V1EnvVar(name="name", value=job_name),
                                     client.V1EnvVar(
                                 name="AWS_ACCESS_KEY_ID",
                                     value_from=client.V1EnvVarSource(
