@@ -111,7 +111,7 @@ while True:
     ),
     
     # MLflow S3 엔드포인트 (공개 설정)
-    client.V1EnvVar(name="MLFLOW_S3_ENDPOINT_URL", value="http://minio-service:30001")
+    client.V1EnvVar(name="MLFLOW_S3_ENDPOINT_URL", value="http://minio-service:9000")
                                 ],
                                 volume_mounts=[
                                     client.V1VolumeMount(
