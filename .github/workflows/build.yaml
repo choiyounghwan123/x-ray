@@ -24,8 +24,24 @@ jobs:
       
       - name: Build and push Docker image
         run: |
+          echo "Building with SHA: ${{ github.sha }}"
           docker build -t ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}
         working-directory: ./train
         
+      - name: Trigger Training Job
+        run: |
+          curl -X POST http://localhost:8000/train \
+            -H "Content-Type: application/json" \
+            -d '{
+              "pr": "${{ github.event.pull_request.number }}",
+              "repo": "${{ github.repository }}",
+              "sha": "${{ github.sha }}",
+              "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
+              "params": {
+                "epochs": 5,
+                "batch_size": 4,
+                "lr": 0.001
+              }
+            }'
       
