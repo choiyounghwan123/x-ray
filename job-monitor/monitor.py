@@ -3,10 +3,12 @@ from dotenv import load_dotenv
 import requests
 import os
 import time
-
+load_dotenv()
 NAMESPACE = 'default'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_REPO = os.getenv('GITHUB_REPO')
+print("TOKEN:", GITHUB_TOKEN)  
+print("REPO:", GITHUB_REPO)
 def comment_pr(pr_number: int, job_name: str, status: str):
     url = f"https://api.github.com/repos/{GITHUB_REPO}/issues/{pr_number}/comments"
     headers = {
