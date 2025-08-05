@@ -81,7 +81,37 @@ while True:
                                 ),
                                 env=[
                                     client.V1EnvVar(name="NVIDIA_VISIBLE_DEVICES", value="all"),
-                                    client.V1EnvVar(name="NVIDIA_DRIVER_CAPABILITIES", value="compute,utility")
+                                    client.V1EnvVar(name="NVIDIA_DRIVER_CAPABILITIES", value="compute,utility"),
+                                    client.V1EnvVar(
+                                name="AWS_ACCESS_KEY_ID",
+                                    value_from=client.V1EnvVarSource(
+                                    secret_key_ref=client.V1SecretKeySelector(
+                        name="mlflow-minio-credentials",
+                key="aws-access-key-id"
+            )
+        )
+    ),
+    client.V1EnvVar(
+        name="AWS_SECRET_ACCESS_KEY",
+        value_from=client.V1EnvVarSource(
+            secret_key_ref=client.V1SecretKeySelector(
+                name="mlflow-minio-credentials",
+                key="aws-secret-access-key"
+            )
+        )
+    ),
+    client.V1EnvVar(
+        name="AWS_DEFAULT_REGION",
+        value_from=client.V1EnvVarSource(
+            secret_key_ref=client.V1SecretKeySelector(
+                name="mlflow-minio-credentials",
+                key="aws-default-region"
+            )
+        )
+    ),
+    
+    # MLflow S3 엔드포인트 (공개 설정)
+    client.V1EnvVar(name="MLFLOW_S3_ENDPOINT_URL", value="http://minio-service:9000")
                                 ],
                                 volume_mounts=[
                                     client.V1VolumeMount(
