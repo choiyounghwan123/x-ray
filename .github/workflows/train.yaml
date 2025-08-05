@@ -15,6 +15,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       
+      - name: Get PR SHA
+        id: get-sha
+        run: |
+          SHA="${{ github.event.workflow_run.head_sha }}"
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+          echo "Using SHA: $SHA"
+          
       - name: Trigger API Training Job
         run: |
           curl -X POST http://localhost:8000/train \
@@ -22,8 +29,8 @@ jobs:
             -d '{
               "pr": "${{ github.event.workflow_run.pull_requests[0].number }}",
               "repo": "${{ github.repository }}",
-              "sha": "${{ github.event.workflow_run.head_sha }}",
-              "image": "fdgdfgdgf123/train-img:${{ github.event.workflow_run.head_sha }}",
+              "sha": "${{ steps.get-sha.outputs.sha }}",
+              "image": "fdgdfgdgf123/train-img:${{ steps.get-sha.outputs.sha }}",
               "params": {
                 "epochs": 5,
                 "batch_size": 4,
