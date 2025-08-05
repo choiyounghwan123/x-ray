@@ -68,7 +68,7 @@ while True:
             metadata=client.V1ObjectMeta(name=job_name),
             spec=client.V1JobSpec(
                 template=client.V1PodTemplateSpec(
-                    metadata=client.V1ObjectMeta(labels={"job": job_name}),
+                    metadata=client.V1ObjectMeta(labels={"job": job_name, "pr-number": str(pr)}),
                     spec=client.V1PodSpec(
                         containers=[
                             client.V1Container(
