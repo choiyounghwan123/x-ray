@@ -18,10 +18,15 @@ jobs:
       - name: Get PR SHA  
         id: get-sha
         run: |
-          # Get the actual SHA from the successful workflow run
-          SHA="${{ github.event.workflow_run.head_commit.id }}"
+          # Use the same SHA that build.yaml used
+          SHA="${{ github.event.workflow_run.head_sha }}"
+          if [ -z "$SHA" ]; then
+            SHA="${{ github.event.workflow_run.head_commit.id }}"
+          fi
           echo "sha=$SHA" >> $GITHUB_OUTPUT
           echo "Using SHA: $SHA"
+          echo "Original workflow SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Head commit SHA: ${{ github.event.workflow_run.head_commit.id }}"
           
       - name: Trigger API Training Job
         run: |
