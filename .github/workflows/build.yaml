@@ -1,17 +1,9 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'train/**'
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'train/**'
-  workflow_dispatch:
+    types: [opened, synchronize, reopened]
+      
 
 jobs:
   build:
