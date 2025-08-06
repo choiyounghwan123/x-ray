@@ -40,7 +40,7 @@ jobs:
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
               "image": "${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}",
-              "name": "classifier",
+              "experiment_name": "Lung-Xray-Classifier",
               "command": ["python", "train_classifier.py"],
               "params": {
                 "epochs": 5,

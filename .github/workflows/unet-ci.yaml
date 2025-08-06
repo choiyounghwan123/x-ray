@@ -39,6 +39,7 @@ jobs:
               "pr": "${{ github.event.pull_request.number }}",
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
+              "experiment_name": "unet-lung-segmentation",
               "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
               "command": ["python", "train_unet_with_mlflow.py"],
               "params": {

@@ -10,7 +10,6 @@ NAMESPACE = 'default'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_REPO = os.getenv('GITHUB_REPO')
 MLFLOW_URL = "http://mlflow-service:5000"
-EXPERIMENT_ID = 2
 print("TOKEN:", GITHUB_TOKEN[:10] + "..." if GITHUB_TOKEN else "None")
 print("REPO:", GITHUB_REPO)
 
@@ -44,6 +43,20 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 
     run_id = None
     artifact_url = None
+    experiment_name = job.metadata.labels.get("experiment_name")
+    
+    #동적으로 experiment_id 찾기 mlflow에서 찾기
+    mlflow_resp = requests.post(
+                f"{MLFLOW_URL}/api/2.0/mlflow/experiments/search",
+                headers={"Content-Type": "application/json"},
+                json={
+                    "experiment_name": experiment_name
+                },
+                timeout=5
+            )
+    mlflow_resp.raise_for_status()
+    experiment_id = mlflow_resp.json()["experiments"][0]["experiment_id"]
+        
 
     # ✅ MLflow에서 Run 찾기 (성공/실패일 때만 조회 시도)
     if status in ("success", "failure"):
@@ -52,7 +65,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
                 f"{MLFLOW_URL}/api/2.0/mlflow/runs/search",
                 headers={"Content-Type": "application/json"},
                 json={
-                    "experiment_ids": [EXPERIMENT_ID],
+                    "experiment_ids": [experiment_id],
                     "filter": f'tags.job_name = "{job_name}"',
                     "max_results": 1,
                     "order_by": ["attributes.start_time DESC"]
@@ -80,7 +93,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 - **Image:** `{get_container_image(job)}`
 - **Dataset:** `/data` (training-data-pvc-v2)
 - **Namespace:** `{job.metadata.namespace}`
-- **MLflow Experiment:** [{EXPERIMENT_ID}](http://localhost:30002/#/experiments/{EXPERIMENT_ID})
+- **MLflow Experiment:** [{experiment_id}](http://localhost:30002/#/experiments/{experiment_id})
 """
 
         params = extract_hyperparameters(job)
@@ -96,7 +109,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 
 ### 🎉 Results
 - **Status:** Training completed successfully
-- **MLflow Run:** [View Detailed Results]({MLFLOW_URL}/#/experiments/{EXPERIMENT_ID}/runs/{run_id})\n"""
+- **MLflow Run:** [View Detailed Results]({MLFLOW_URL}/#/experiments/{experiment_id}/runs/{run_id})\n"""
         if artifact_url:
             body += f"- **Model Artifacts:** `{artifact_url}`\n"
         body += "- **Next Steps:** 🔍 Review metrics and approve for deployment\n"
@@ -111,7 +124,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 - **Debug Commands:**
   - `kubectl logs job/{job_name}`
   - `kubectl describe job/{job_name}`
-- **MLflow:** [View Failed Run]({MLFLOW_URL}/#/experiments/{EXPERIMENT_ID}/runs/{run_id})
+- **MLflow:** [View Failed Run]({MLFLOW_URL}/#/experiments/{experiment_id}/runs/{run_id})
 - **Next Steps:** Check logs and retry with updated parameters\n"""
 
     else:
