@@ -44,7 +44,7 @@ while True:
         params = payload["params"]
         sha = payload["sha"]
         # Kubernetes Job 이름
-        job_name = f"train-job-pr-{pr}-{sha}-{payload['name']}"
+        job_name = f"train-job-pr-{pr}-{sha[:8]}-{payload['name']}"
 
         # 인자 이름 매핑 (스크립트의 정확한 인자명에 맞춤)
         arg_mapping = {
