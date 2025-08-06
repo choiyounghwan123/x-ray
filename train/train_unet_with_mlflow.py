@@ -39,7 +39,14 @@ transform = T.Compose([
     T.ToTensor()
 ])
 dataset = LungDataset(image_dir, mask_dir, transform=transform)
-loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+loader = DataLoader(
+    dataset, 
+    batch_size=32,          # 배치 크기 줄이기 (64 → 32)
+    shuffle=True,
+    num_workers=2,          # 워커 수 제한 (기본값 0)
+    pin_memory=False,       # 메모리 피닝 비활성화
+    persistent_workers=True # 워커 재사용 (Python 3.7+)
+)
 
 # 모델 & 학습 설정1313213
 model = UNet().to(device)
