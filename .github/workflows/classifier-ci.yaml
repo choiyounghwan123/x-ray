@@ -1,9 +1,9 @@
-name: Build and Push Docker Image - unet
+name: Build and Push Docker Image - classifier
 
 on:
   pull_request:
     paths:
-      - train/**
+      - train-classifier/**
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
@@ -27,9 +27,9 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building with SHA: ${{ github.sha }}"
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}
-        working-directory: ./train
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}
+        working-directory: ./train-classifier
         
       - name: Trigger Training Job
         run: |
@@ -39,7 +39,7 @@ jobs:
               "pr": "${{ github.event.pull_request.number }}",
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
-              "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
+              "image": "${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}",
               "params": {
                 "epochs": 5,
                 "batch_size": 4,
