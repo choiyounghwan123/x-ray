@@ -10,7 +10,7 @@ COPY . .
 
 # 필요한 패키지 설치 (torch는 이미 포함됨)
 RUN pip install --upgrade pip && \
-    pip install matplotlib mlflow boto3 dotenv cv2
+    pip install matplotlib mlflow boto3 dotenv opencv-python
 
 # 학습 실행
 CMD ["python", "train_unet_with_mlflow.py"]
