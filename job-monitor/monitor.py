@@ -44,17 +44,20 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
     run_id = None
     artifact_url = None
     experiment_name = job.metadata.labels.get("experiment_name")
-    
+    print("experiment_name: ",experiment_name)
     #동적으로 experiment_id 찾기 mlflow에서 찾기
     mlflow_resp = requests.post(
-                f"{MLFLOW_URL}/api/2.0/mlflow/experiments/search",
-                headers={"Content-Type": "application/json"},
-                json={
-                    "experiment_name": experiment_name
-                },
-                timeout=5
-            )
+    f"{MLFLOW_URL}/api/2.0/mlflow/experiments/search",
+    headers={"Content-Type": "application/json"},
+    json={
+        "filter": f"name = '{experiment_name}'",
+        "max_results": 1  # 꼭 명시해야 함!!
+    },
+    timeout=5
+)
+    
     mlflow_resp.raise_for_status()
+    print(mlflow_resp.json())
     experiment_id = mlflow_resp.json()["experiments"][0]["experiment_id"]
         
 
