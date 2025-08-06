@@ -19,7 +19,7 @@ parser.add_argument("--lr", type=float, default=0.001, help="Learning rate")
 parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs")
 args = parser.parse_args()
 
-# 하이퍼파라미터
+# 하이퍼파라미터13213
 BATCH_SIZE = args.batch_size
 EPOCHS = args.num_epochs
 LR = args.lr

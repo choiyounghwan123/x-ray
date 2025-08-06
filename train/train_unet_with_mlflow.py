@@ -41,7 +41,7 @@ transform = T.Compose([
 dataset = LungDataset(image_dir, mask_dir, transform=transform)
 loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-# 모델 & 학습 설정
+# 모델 & 학습 설정1313213
 model = UNet().to(device)
 criterion = nn.BCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
