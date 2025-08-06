@@ -1,0 +1,36 @@
+# 1. ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: job-watcher-sa
+  namespace: default
+
+---
+
+# 2. Role - Job 리소스에 대한 권한 부여
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: job-watcher-role
+  namespace: default
+rules:
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "patch"]
+
+---
+
+# 3. RoleBinding - Role과 ServiceAccount 연결
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: job-watcher-binding
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: job-watcher-sa
+    namespace: default
+roleRef:
+  kind: Role
+  name: job-watcher-role
+  apiGroup: rbac.authorization.k8s.io

@@ -1,6 +1,7 @@
 train/Chest-X-Ray/
 job-monitor/.env
-
+job-monitor/github-secret.yaml
+train-classifier/chest_xray/
 # Log files
 *.log
 nohup*.log
