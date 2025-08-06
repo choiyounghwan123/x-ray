@@ -1,3 +1,6 @@
 nohup: ignoring input
 Forwarding from 0.0.0.0:8000 -> 8000
 Handling connection for 8000
+Handling connection for 8000
+E0806 06:37:20.661765 1970597 portforward.go:424] "Unhandled Error" err="an error occurred forwarding 8000 -> 8000: error forwarding port 8000 to pod 1a545467f99975d95fbb63fb6be3d4764aa0a56101a76aa50c0ce920a66083fa, uid : failed to find sandbox \"1a545467f99975d95fbb63fb6be3d4764aa0a56101a76aa50c0ce920a66083fa\" in store: not found"
+error: lost connection to pod

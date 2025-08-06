@@ -41,6 +41,7 @@ jobs:
               "sha": "${{ github.sha }}",
               "image": "${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}",
               "experiment_name": "Lung-Xray-Classifier",
+              "name": "classifier",
               "command": ["python", "train_classifier.py"],
               "params": {
                 "epochs": 5,
