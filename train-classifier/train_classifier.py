@@ -23,7 +23,7 @@ args = parser.parse_args()
 BATCH_SIZE = args.batch_size
 EPOCHS = args.num_epochs
 LR = args.lr
-DATA_DIR = "data/chest_xray"
+DATA_DIR = "/data/chest_xray"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ✅ MLflow 설정
