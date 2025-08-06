@@ -10,6 +10,10 @@ import os
 from unet import UNet
 from dataset import LungDataset
 import argparse
+from dotenv import load_dotenv
+
+load_dotenv()
+job_name = os.getenv("name")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", type=str, default="Chest-X-Ray", help="Data directory")
@@ -47,6 +51,7 @@ mlflow.set_tracking_uri("http://mlflow-service:5000")
 mlflow.set_experiment("unet-lung-segmentation")
 
 with mlflow.start_run():
+    mlflow.set_tag("job_name", job_name)
     mlflow.log_param("lr", lr)
     mlflow.log_param("batch_size", batch_size)
     mlflow.log_param("epochs", num_epochs)

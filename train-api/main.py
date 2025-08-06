@@ -28,7 +28,10 @@ async def train_endpoint(request: Request):
         "pr": payload.get("pr"),
         "repo": payload.get("repo"),
         "sha": payload.get("sha"),
+        "experiment_name": payload.get("experiment_name"),
+        "name": payload.get("name"),
         "image": payload.get("image", "fdgdfgdgf123/train-img:latest"),
+        "command": payload.get("command", ["python", "train_unet_with_mlflow.py"]),
         "params": payload.get("params", {"epochs": 3})
     }
 

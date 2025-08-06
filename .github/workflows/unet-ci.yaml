@@ -1,0 +1,52 @@
+name: Build and Push Docker Image - unet
+
+on:
+  pull_request:
+    paths:
+      - train/**
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build and push Docker image
+        run: |
+          echo "Building with SHA: ${{ github.sha }}"
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}
+        working-directory: ./train
+        
+      - name: Trigger Training Job
+        run: |
+          curl -X POST http://localhost:8000/train \
+            -H "Content-Type: application/json" \
+            -d '{
+              "pr": "${{ github.event.pull_request.number }}",
+              "repo": "${{ github.repository }}",
+              "sha": "${{ github.sha }}",
+              "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
+              "experiment_name": "Lung-Xray-Segmentation",
+              "name": "unet",
+              "command": ["python", "train_unet_with_mlflow.py"],
+              "params": {
+                "epochs": 5,
+                "batch_size": 4,
+                "lr": 0.001
+              }
+            }'
+      

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-watcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-watcher
+  template:
+    metadata:
+      labels:
+        app: job-watcher
+    spec:
+      serviceAccountName: job-watcher-sa
+      containers:
+        - name: job-watcher
+          image: fdgdfgdgf123/job-watcher:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: github-secret

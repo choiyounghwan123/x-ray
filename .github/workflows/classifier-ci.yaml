@@ -1,7 +1,9 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image - classifier
 
 on:
   pull_request:
+    paths:
+      - train-classifier/**
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
@@ -25,9 +27,9 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "Building with SHA: ${{ github.sha }}"
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}
-        working-directory: ./train
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}
+        working-directory: ./train-classifier
         
       - name: Trigger Training Job
         run: |
@@ -37,10 +39,13 @@ jobs:
               "pr": "${{ github.event.pull_request.number }}",
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
-              "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
+              "image": "${{ secrets.DOCKER_USERNAME }}/train-classifier:${{ github.sha }}",
+              "experiment_name": "Lung-Xray-Classifier",
+              "name": "classifier",
+              "command": ["python", "train_classifier.py"],
               "params": {
                 "epochs": 5,
-                "batch_size": 4,
+                "batch_size": 64,
                 "lr": 0.001
               }
             }'

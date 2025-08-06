@@ -42,9 +42,9 @@ while True:
         pr = payload["pr"]
         image = payload["image"]
         params = payload["params"]
-
+        sha = payload["sha"]
         # Kubernetes Job 이름
-        job_name = f"train-job-pr-{pr}"
+        job_name = f"train-job-pr-{pr}-{sha[:8]}-{payload['name']}"
 
         # 인자 이름 매핑 (스크립트의 정확한 인자명에 맞춤)
         arg_mapping = {
@@ -73,8 +73,8 @@ while True:
                         containers=[
                             client.V1Container(
                                 name="trainer",
+                                command=payload["command"],
                                 image=image,
-                                command=["python", "train_unet_with_mlflow.py"],
                                 args=mapped_args,
                                 resources=client.V1ResourceRequirements(
                                     limits={"nvidia.com/gpu": "1"}  # GPU 요청
@@ -82,6 +82,8 @@ while True:
                                 env=[
                                     client.V1EnvVar(name="NVIDIA_VISIBLE_DEVICES", value="all"),
                                     client.V1EnvVar(name="NVIDIA_DRIVER_CAPABILITIES", value="compute,utility"),
+                                    client.V1EnvVar(name="name", value=job_name),
+                                    client.V1EnvVar(name="experiment_name", value=payload["experiment_name"]),
                                     client.V1EnvVar(
                                 name="AWS_ACCESS_KEY_ID",
                                     value_from=client.V1EnvVarSource(
