@@ -22,4 +22,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . .
 
 # 6. 기본 실행 명령 설정
-CMD ["python", "train.py"]
+ENTRYPOINT  ["python", "train_classifier.py"]

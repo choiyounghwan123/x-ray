@@ -42,9 +42,9 @@ while True:
         pr = payload["pr"]
         image = payload["image"]
         params = payload["params"]
-
+        sha = payload["sha"]
         # Kubernetes Job 이름
-        job_name = f"train-job-pr-{pr}"
+        job_name = f"train-job-pr-{pr}-{sha}"
 
         # 인자 이름 매핑 (스크립트의 정확한 인자명에 맞춤)
         arg_mapping = {
@@ -74,7 +74,6 @@ while True:
                             client.V1Container(
                                 name="trainer",
                                 image=image,
-                                command=["python", "train_unet_with_mlflow.py"],
                                 args=mapped_args,
                                 resources=client.V1ResourceRequirements(
                                     limits={"nvidia.com/gpu": "1"}  # GPU 요청
