@@ -73,6 +73,7 @@ while True:
                         containers=[
                             client.V1Container(
                                 name="trainer",
+                                command=payload["command"],
                                 image=image,
                                 args=mapped_args,
                                 resources=client.V1ResourceRequirements(
