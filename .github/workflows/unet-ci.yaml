@@ -40,7 +40,7 @@ jobs:
               "repo": "${{ github.repository }}",
               "sha": "${{ github.sha }}",
               "image": "${{ secrets.DOCKER_USERNAME }}/train-img:${{ github.sha }}",
-              "experiment_name": "Lung-Xray-Segmentation",
+              "experiment_name": "unet-lung-segmentation",
               "name": "unet",
               "command": ["python", "train_unet_with_mlflow.py"],
               "params": {

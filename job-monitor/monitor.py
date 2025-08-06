@@ -9,7 +9,7 @@ load_dotenv()
 NAMESPACE = 'default'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_REPO = os.getenv('GITHUB_REPO')
-MLFLOW_URL = "http://mlflow-service:5000"
+MLFLOW_URL = "http://10.125.208.187:5000"
 print("TOKEN:", GITHUB_TOKEN[:10] + "..." if GITHUB_TOKEN else "None")
 print("REPO:", GITHUB_REPO)
 
