@@ -9,7 +9,7 @@ load_dotenv()
 NAMESPACE = 'default'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_REPO = os.getenv('GITHUB_REPO')
-MLFLOW_URL = "http://mlflow-service:5000"
+MLFLOW_URL = "http://10.125.208.187:5000"
 print("TOKEN:", GITHUB_TOKEN[:10] + "..." if GITHUB_TOKEN else "None")
 print("REPO:", GITHUB_REPO)
 
@@ -44,17 +44,20 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
     run_id = None
     artifact_url = None
     experiment_name = job.metadata.labels.get("experiment_name")
-    
+    print("experiment_name: ",experiment_name)
     #동적으로 experiment_id 찾기 mlflow에서 찾기
     mlflow_resp = requests.post(
-                f"{MLFLOW_URL}/api/2.0/mlflow/experiments/search",
-                headers={"Content-Type": "application/json"},
-                json={
-                    "experiment_name": experiment_name
-                },
-                timeout=5
-            )
+    f"{MLFLOW_URL}/api/2.0/mlflow/experiments/search",
+    headers={"Content-Type": "application/json"},
+    json={
+        "filter": f"name = '{experiment_name}'",
+        "max_results": 1  # 꼭 명시해야 함!!
+    },
+    timeout=5
+)
+    
     mlflow_resp.raise_for_status()
+    print(mlflow_resp.json())
     experiment_id = mlflow_resp.json()["experiments"][0]["experiment_id"]
         
 
@@ -93,7 +96,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 - **Image:** `{get_container_image(job)}`
 - **Dataset:** `/data` (training-data-pvc-v2)
 - **Namespace:** `{job.metadata.namespace}`
-- **MLflow Experiment:** [{experiment_id}](http://localhost:30002/#/experiments/{experiment_id})
+- **MLflow Experiment:** [{experiment_id}](http://10.125.208.187:5000/#/experiments/{experiment_id})
 """
 
         params = extract_hyperparameters(job)
@@ -109,7 +112,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 
 ### 🎉 Results
 - **Status:** Training completed successfully
-- **MLflow Run:** [View Detailed Results]({MLFLOW_URL}/#/experiments/{experiment_id}/runs/{run_id})\n"""
+- **MLflow Run:** [View Detailed Results](http://10.125.208.187:5000/#/experiments/{experiment_id}/runs/{run_id})\n"""
         if artifact_url:
             body += f"- **Model Artifacts:** `{artifact_url}`\n"
         body += "- **Next Steps:** 🔍 Review metrics and approve for deployment\n"

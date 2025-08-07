@@ -1,16 +1,25 @@
-# Dockerfile
+FROM pytorch/pytorch:2.7.1-cuda12.6-cudnn9-runtime
 
-FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
-
-# 작업 디렉토리 설정
 WORKDIR /app
 
-# 코드 복사
+ENV DEBIAN_FRONTEND=noninteractive
+
 COPY . .
 
-# 필요한 패키지 설치 (torch는 이미 포함됨)
-RUN pip install --upgrade pip && \
-    pip install matplotlib mlflow boto3 dotenv
+# OpenCV, matplotlib 등 시각화/이미지 관련 시스템 라이브러리
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+ && rm -rf /var/lib/apt/lists/*
 
-# 학습 실행
+# Python 패키지 설치
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir \
+        matplotlib \
+        mlflow \
+        boto3 \
+        python-dotenv \
+        opencv-python-headless \
+        psutil
+
 CMD ["python", "train_unet_with_mlflow.py"]

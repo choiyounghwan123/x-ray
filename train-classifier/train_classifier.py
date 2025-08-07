@@ -14,12 +14,12 @@ job_name = os.getenv("name")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", type=str, default="Chest-X-Ray", help="Data directory")
-parser.add_argument("--batch_size", type=int, default=64, help="Batch size")
+parser.add_argument("--batch_size", type=int, default=256, help="Batch size")
 parser.add_argument("--lr", type=float, default=0.001, help="Learning rate")
 parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs")
 args = parser.parse_args()
 
-# 하이퍼파라미터
+# 하이퍼파라미터13213
 BATCH_SIZE = args.batch_size
 EPOCHS = args.num_epochs
 LR = args.lr

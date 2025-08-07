@@ -65,10 +65,10 @@ while True:
 
         # Job 스펙
         job = client.V1Job(
-            metadata=client.V1ObjectMeta(name=job_name, labels={"job": job_name, "pr-number": str(pr)}),
+            metadata=client.V1ObjectMeta(name=job_name, labels={"job": job_name, "pr-number": str(pr), "experiment_name": payload["experiment_name"]}),
             spec=client.V1JobSpec(
                 template=client.V1PodTemplateSpec(
-                    metadata=client.V1ObjectMeta(labels={"job": job_name, "pr-number": str(pr)}),
+                    metadata=client.V1ObjectMeta(labels={"job": job_name, "pr-number": str(pr), "experiment_name": payload["experiment_name"]}),
                     spec=client.V1PodSpec(
                         containers=[
                             client.V1Container(
