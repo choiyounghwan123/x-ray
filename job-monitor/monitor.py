@@ -96,7 +96,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 - **Image:** `{get_container_image(job)}`
 - **Dataset:** `/data` (training-data-pvc-v2)
 - **Namespace:** `{job.metadata.namespace}`
-- **MLflow Experiment:** [{experiment_id}](http://localhost:30002/#/experiments/{experiment_id})
+- **MLflow Experiment:** [{experiment_id}](http://10.125.208.187:5000/#/experiments/{experiment_id})
 """
 
         params = extract_hyperparameters(job)
@@ -112,7 +112,7 @@ def comment_pr(pr_number: int, job_name: str, status: str, job=None):
 
 ### 🎉 Results
 - **Status:** Training completed successfully
-- **MLflow Run:** [View Detailed Results]({MLFLOW_URL}/#/experiments/{experiment_id}/runs/{run_id})\n"""
+- **MLflow Run:** [View Detailed Results](http://10.125.208.187:5000/#/experiments/{experiment_id}/runs/{run_id})\n"""
         if artifact_url:
             body += f"- **Model Artifacts:** `{artifact_url}`\n"
         body += "- **Next Steps:** 🔍 Review metrics and approve for deployment\n"
