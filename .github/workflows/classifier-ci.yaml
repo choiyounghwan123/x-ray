@@ -44,7 +44,7 @@ jobs:
               "name": "classifier",
               "command": ["python", "train_classifier.py"],
               "params": {
-                "epochs": 5,
+                "epochs": 20,
                 "batch_size": 256,
                 "lr": 0.001
               }
