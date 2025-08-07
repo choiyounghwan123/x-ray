@@ -45,7 +45,7 @@ jobs:
               "command": ["python", "train_unet_with_mlflow.py"],
               "params": {
                 "epochs": 5,
-                "batch_size": 4,
+                "batch_size": 32,
                 "lr": 0.001
               }
             }'
